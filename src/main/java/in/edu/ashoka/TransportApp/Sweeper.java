@@ -1,0 +1,20 @@
+/**Package declaration. */
+package in.edu.ashoka.TransportApp;
+
+/** Necessary imports */
+import java.util.Calendar;
+import java.util.TimerTask;
+
+/** Will delete the details of those shuttles whose departure times are past. 
+ * 
+ * @author Nishka
+ */
+class Sweeper extends TimerTask{
+@Override
+    public void run() {
+    Calendar c=Calendar.getInstance();
+    String formattedDate=c.get(Calendar.DATE)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.YEAR)+" "+c.get(Calendar.HOUR)+":"+c.get(Calendar.MINUTE);
+    Bookings.cleanUp(formattedDate, 1);
+    Bookings.cleanUp(formattedDate, 2);
+    }
+}
