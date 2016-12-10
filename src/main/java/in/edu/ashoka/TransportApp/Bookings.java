@@ -213,15 +213,19 @@ public class Bookings {
      * 
      * @param date1 the first date
      * @param date2 the date to compare
-     * @throws ParseException
      * @return whether date2 is before date1
      */
-    static boolean isAfter(String date1, String date2) throws ParseException
+    static boolean isAfter(String date1, String date2) 
     {
-        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-        Date day1=sdf.parse(date1);
-        Date day2=sdf.parse(date2);
-        return day1.after(day2);
+        try{
+            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+            Date day1=sdf.parse(date1);
+            Date day2=sdf.parse(date2);
+            return day1.after(day2);
+        }
+        catch(ParseException p){
+            return false;
+        }
     }
     
     /**Returns an array containing the names of the successful bookings and the names of the waitlisted users.
