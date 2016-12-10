@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**Contains code for the core functionality of the project,i.e
  * maintaining bookings across all shuttles for 9 days and 
@@ -53,8 +54,8 @@ public class Bookings {
         Calendar newCal=Calendar.getInstance();
         newCal.set(year, month, day);
         String whichFile = getFileName(newCal.get(Calendar.DAY_OF_WEEK));
-        String wdaycj = "C:/ShuttleProject/campus_to_jahangirpuri_weekend.txt";
-        String wdayjc = "C:/ShuttleProject/jahangirpuri_to_campus_weekend.txt";
+        String wdaycj = "C:/ShuttleProject/campus_to_jahangirpuri_"+whichFile+".txt";
+        String wdayjc = "C:/ShuttleProject/jahangirpuri_to_campus_"+whichFile+".txt";
         File cfile = new File(wdaycj);
         File jfile = new File(wdayjc);
         createLists(cfile, formattedDate, "Jahangirpuri", fromCampus);
@@ -171,7 +172,7 @@ public class Bookings {
      * @param destination the destination
      * @return the Shuttle object in the hashmap with key identical to timing
      */
-    static Shuttle toBeChanged(String timing, String destination) {
+    public static Shuttle toBeChanged(String timing, String destination) {
         HashMap<String, Shuttle> toModify;
         if (destination.equals("Campus")) {
             toModify = fromStation;
@@ -212,47 +213,15 @@ public class Bookings {
      * 
      * @param date1 the first date
      * @param date2 the date to compare
+     * @throws ParseException
      * @return whether date2 is before date1
      */
-    static boolean isAfter(String date1, String date2)
+    static boolean isAfter(String date1, String date2) throws ParseException
     {
-        String[] dandt1=date1.split("\\s+");
-        String[] dandt2=date2.split("\\s+");
-        try{
-            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-            Date day1=sdf.parse(dandt1[0]);
-            Date day2=sdf.parse(dandt2[0]);
-            if(day2.after(day1))
-            {
-                return true;
-            }
-            else
-            if(day2.equals(day1))
-            {
-                String[] hm1=dandt1[1].split(":");
-                String[] hm2=dandt2[1].split(":");
-                if(Integer.parseInt(hm1[0])>Integer.parseInt(hm2[0]))
-                {
-                    return true;
-                }
-                else
-                if(Integer.parseInt(hm1[0])==Integer.parseInt(hm2[0]))
-                {
-                    return (Integer.parseInt(hm1[1])>Integer.parseInt(hm2[1]));
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        finally{
-            return false;
-        }
+        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+        Date day1=sdf.parse(date1);
+        Date day2=sdf.parse(date2);
+        return day1.after(day2);
     }
     
     /**Returns an array containing the names of the successful bookings and the names of the waitlisted users.

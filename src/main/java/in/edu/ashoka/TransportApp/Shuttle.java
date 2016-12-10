@@ -1,7 +1,5 @@
 package in.edu.ashoka.TransportApp;
 
-import java.util.*;
-
 /**For maintaining Shuttle type objects. 
  * Each object contains a list of successful bookings, 
  * a list of waitlisted users, 
@@ -174,11 +172,7 @@ public class Shuttle
     {
         if(this.empty>0)
         {
-<<<<<<< HEAD
             this.names[this.numSeats-this.empty]=id;
-=======
-            this.names[12-this.empty]=id;
->>>>>>> 907949bf5bec8893bd2e5230d202b34c193a973b
             this.empty--;
             return 1;
         }
