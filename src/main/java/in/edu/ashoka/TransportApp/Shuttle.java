@@ -180,7 +180,8 @@ public class Shuttle
         {
             try
             {
-                this.waitlist[numwaitlisted+1]=id;
+                this.waitlist[this.numwaitlisted+1]=id;
+                this.numwaitlisted++;
                 return 0;
             }
             catch(ArrayIndexOutOfBoundsException e)
