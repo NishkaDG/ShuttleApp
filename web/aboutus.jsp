@@ -109,8 +109,8 @@ inde
                 	<li><a href=index.jsp>Home</a></li>
                     <li><a href="#about">About Us</a></li>
 					<li><a href=index.jsp>Booking</a></li>
-					<li><a href=index.jsp>Booking Status</a></li>
-					<li><a href=index.jsp>Cancellation</a></li>
+					<li><a href=Bookingstatus.jsp>Booking Status</a></li>
+					<li><a href=Cancellation.jsp>Cancellation</a></li>
 					<li><a href=feedback.jsp>Feedback</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->

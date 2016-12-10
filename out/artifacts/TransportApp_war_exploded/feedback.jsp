@@ -63,10 +63,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                 	<li><a href=index.jsp>Home</a></li>
-                    <li><a href=aboutus.html>About Us</a></li>
+                    <li><a href=aboutus.jsp>About Us</a></li>
 					<li><a href=index.jsp>Booking</a></li>
-					<li><a href=index.jsp>Booking Status</a></li>
-					<li><a href=index.jsp>Cancellation</a></li>
+					<li><a href=Bookingstatus.jsp>Booking Status</a></li>
+					<li><a href=Cancellation.jsp>Cancellation</a></li>
 					<li><a href="#feedback-form">Feedback</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
