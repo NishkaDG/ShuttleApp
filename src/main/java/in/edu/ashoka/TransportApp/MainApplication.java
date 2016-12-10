@@ -42,7 +42,8 @@ public class MainApplication extends HttpServlet{
      * @param ch User's choice
      * @param name User's name
      * @param datetime Timing of departure of the shuttle
-     * @param destination Destination of the shuttle
+     * @param destination Destination of the 
+     * @throws ParseException
      * @return Whether success or failure
      */
     public static int manager(int ch, String name, String datetime, String destination) throws ParseException{
