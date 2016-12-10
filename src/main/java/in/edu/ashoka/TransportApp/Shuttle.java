@@ -149,7 +149,7 @@ public class Shuttle
         String[] c=initArray(new String[12]);
         int ctr=0;
         int e=0;
-        for(int i=0; i<12; i++)
+        for(int i=0; i<arr.length; i++)
         {
             if(!arr[i].isEmpty())
             {
@@ -174,8 +174,8 @@ public class Shuttle
     {
         if(this.empty>0)
         {
-            this.names[12-this.empty]=id;
-            this.empty++;
+            this.names[this.numSeats-this.empty]=id;
+            this.empty--;
             return 1;
         }
         else
@@ -226,15 +226,15 @@ public class Shuttle
      * @param id the user's name
      * @return whether or not a seat has been booked for the user
      */
-    boolean checkForBooking(String id)
+    int checkForBooking(String id)
     {
         for(int i=0; i<this.names.length; i++)
         {
             if(this.names[i].equals(id))
             {
-                return true;
+                return 1;
             }
         }
-        return false;
+        return 0;
     }
 }

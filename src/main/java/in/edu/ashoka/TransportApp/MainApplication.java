@@ -6,9 +6,9 @@ import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.io.*;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import org.apache.catalina.startup.Tomcat;
 
 import javax.servlet.ServletException;
@@ -21,9 +21,7 @@ import javax.servlet.http.HttpServlet;
 public class MainApplication extends HttpServlet{
 
     /*
-     * To execute the program.
-     *
-     * @param args not used
+     * To execute the program
      */
 
     public void init() throws ServletException{
@@ -36,14 +34,46 @@ public class MainApplication extends HttpServlet{
         refreshSchedule();
         deleteOld();
         checkToSMS();
-        System.out.println(BookUser("Mayukh", "10-12-2016 09:00", "Campus"));
     }
-
-    public static int BookUser(String name, String datetime, String destination){
-        return Bookings.book(name,datetime,destination);
+    
+    /**
+     * To execute the program
+     * 
+     * @param ch User's choice
+     * @param name User's name
+     * @param datetime Timing of departure of the shuttle
+     * @param destination Destination of the shuttle
+     * @return Whether success or failure
+     */
+    public static int manager(int ch, String name, String datetime, String destination) throws ParseException{
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        Date currentDate = new Date();
+        Date selectedDate = sdf.parse(datetime);
+        if(selectedDate.after(currentDate))
+        {
+            Shuttle toModify = Bookings.toBeChanged(datetime, destination);
+            switch(ch)
+            {
+                case 0:
+                    return Bookings.book(name, toModify);
+                case 1:
+                    return Bookings.cancelBooking(name, toModify);
+                case 2:
+                    return Bookings.checkIfBooked(name, toModify);
+                default:
+                    return -1;
+            }
+        }
+        return -1;
     }
-
+    
+    /**To run the program
+     * 
+     * @param args not used
+     * @throws IOException 
+     */
     public static void main(String[] args) throws IOException {
+        
 
 //        SMSPush messageTool = new SMSPush();
 //        try {
@@ -56,9 +86,9 @@ public class MainApplication extends HttpServlet{
         /**Will create new Shuttle-type objects every day at midnight.
          *
          */
+    }
 
-
-    }//MainApplication ends
+    //MainApplication ends
     static void refreshSchedule() {
         Timer timer = new Timer();
         Calendar date = Calendar.getInstance();
@@ -91,6 +121,6 @@ public class MainApplication extends HttpServlet{
         Timer toSMS = new Timer();
         toSMS.schedule(new CheckTimings(), 0, 1000 * 60 * 5);
     }
-}
+ }
 
 

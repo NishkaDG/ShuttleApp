@@ -108,7 +108,7 @@ public class Bookings {
             }
             if (t.length() > 0) {
                 Shuttle nextOne = new Shuttle(date+" "+t, goingTo, 12);
-                al.put(t, nextOne);
+                al.put(date+" "+t, nextOne);
             }
         } finally {
             if (timings != null) {
@@ -116,36 +116,30 @@ public class Bookings {
             }
         }
     }
-    
+        
     /**Books the seats of the intended shuttle by calling the relevant object from the right hashmap.
      * 
      * @param id the name of the user 
-     * @param timing the desired date and time
-     * @param destination the desired destination
+     * @param toBook the shuttle to book a seat on
      * @return 1 for successful booking; 0 for waitlisted; 2 for waitlist full; -1 for incorrect details or failure
      */
-    public static int book(String id, String timing, String destination) {
-        int rv;
-        Shuttle toBook = toBeChanged(timing, destination);
+    public static int book(String id, Shuttle toBook) {
         try{
-            rv = toBook.bookSeat(id);
+            return toBook.bookSeat(id);
         }
         catch(NullPointerException e)
         {
-            rv = -1;
+            return -1;
         }
-        return rv;
     }
     
     /**Cancels the seats of the intended shuttle by calling the relevant Shuttle object from the right hashmap
      * 
      * @param id the name of the user
-     * @param timing the desired date and time
-     * @param destination the desired destination
+     * @param toCancel the shuttle to book a seat on
      * @return 1 if cancelled, -1 if incorrect details
      */
-    public static int cancelBooking(String id, String timing, String destination) {
-        Shuttle toCancel = toBeChanged(timing, destination);
+    public static int cancelBooking(String id, Shuttle toCancel) {
         try{
             toCancel.cancel(id);
             return 1;
@@ -159,17 +153,15 @@ public class Bookings {
     /**Checks if user's name has been added to the list of bookings in a shuttle.
      * 
      * @param id the name of the user
-     * @param timing the timing
-     * @param destination the destination
+     * @param toCheck the shuttle to be checked
      * @return True if booked, false otherwise
      */
-    public static boolean checkIfBooked(String id, String timing, String destination) {
-        Shuttle toCheck = toBeChanged(timing, destination);
+    public static int checkIfBooked(String id, Shuttle toCheck) {
         try{
             return toCheck.checkForBooking(id);
         }
         catch(NullPointerException e){
-            return false;
+            return -1;
         }
     }
     
