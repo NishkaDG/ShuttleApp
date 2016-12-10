@@ -1,4 +1,4 @@
-<!doctype html>
+<%@page contentType="text/html" language="java" pageEncoding="UTF-8" %>
 <html lang="en">
 	<head>
 		<title>Ashoka Shuttle Service</title>
@@ -13,7 +13,7 @@
         <script type="text/javascript" src="scripts.js"></script>
         
         </head>
-inde
+
 	<style type="text/css">
 
 		body{

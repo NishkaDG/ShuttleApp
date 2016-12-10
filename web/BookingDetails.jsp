@@ -47,15 +47,15 @@
 </head>
 <body>
 
-    <div id ="space"></div>
-    <div id="p1">
+    <%--<div id ="space"></div>--%>
+    <%--<div id="p1">--%>
 
-        <h4 >Your request is being processed...please wait.</h4>
-        <p align="center">Do not refresh, close, or move away from this page while the request is being processed.</p>
-    </div>
-    <!-- MDL Progress Bar with Indeterminate Progress -->
+        <%--<h4 >Your request is being processed...please wait.</h4>--%>
+        <%--<p align="center">Do not refresh, close, or move away from this page while the request is being processed.</p>--%>
+    <%--</div>--%>
+    <%--<!-- MDL Progress Bar with Indeterminate Progress -->--%>
 
-    <div id="p2"  class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+    <%--<div id="p2"  class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>--%>
 
         <%
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("display.jsp");
@@ -64,6 +64,18 @@
             String destination = request.getParameter("destination");
             String date = request.getParameter("date");
             System.out.println(name+" "+bookingStatus+" "+destination+" "+date);
+
+            %>
+                <div id ="space"></div>
+                <div id="p1">
+
+                    <h4 >Your request is being processed...please wait.</h4>
+                    <p align="center">Do not refresh, close, or move away from this page while the request is being processed.</p>
+                </div>
+                <!-- MDL Progress Bar with Indeterminate Progress -->
+
+                <div id="p2"  class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+            <%
 
             if("Booking".equals(bookingStatus)){
             System.out.println("User opted to book, it seems");
@@ -105,6 +117,7 @@
                                     }, 5000);
                                     </script>
                                     <%
+                                    break;
                             case 2: System.out.println("Waitlist is full; Booking rejected");
                                     String rejectedText = "<h2> Your booking has been rejected </h2>\n\n"+"<p> No more passengers can be allotted on this time slot. However, you can contact the guards minutes before the time slot for possible seat vacancies. <p>";
                                     request.setAttribute("processResult",rejectedText);
@@ -120,6 +133,7 @@
                                         }, 5000);
                                     </script>
                                     <%
+                                    break;
                             case -1: System.out.println("Booking error occurred");
                                     String errorText = "<h2> An error occurred while processing your request </h2>\n\n"+"<p> You have submitted incorrect data while requesting the booking. If the problem persists repeatedly, please contact us through the Feedback section. <p>";
                                     request.setAttribute("processResult",errorText);
@@ -135,8 +149,71 @@
                                             }, 5000);
                                     </script>
                                     <%
+                                    break;
+                                        }
+              /* line */
+
+              if("Booking Status".equals(bookingStatus)){
+                  System.out.println("User opted to check booking, it seems");
+
+                  try {
+                      BookingResult = MainApplication.manager(2,name,date,destination);
+                      } catch (ParseException e) {
+                        e.printStackTrace();
+                      }
+                      System.out.println(BookingResult);
+                      switch(BookingResult){
+                          case 1: System.out.println("User is booked");
+                                  String userBookedText = "<h2> User Booking Check </h2> \n" + "<p> You are booked currently on the shuttle. Details are as follows: </p>\n\n"+"Name: "+name+"\n"+"Destination: "+destination+"\n"+"Date and Time: "+date+"\n \n"+" <p> You can check your status using Booking Status anytime, or talk to the guards minutes before the shuttle departs. <p>";
+                                  request.setAttribute("processResult",userBookedText);
+                                  requestDispatcher.forward(request,response);
+                                  System.out.println("Request sent");
+                                    %>
+                                        <script>
+                                        window.setTimeout(function(){
+
+                                            // Move to a new location or you can do something else
+                                            window.location.href = "display.jsp";
+
+                                        }, 5000);
+                                    </script>
+                                    <%
+                                    break;
+                            case 0: System.out.println("User is not confirmed");
+                                     String userUnconfirmedText = "<h2> User Booking Check </h2> \n" + "<p> Your booking is under waitlisting and has not been confirmed yet. Please Check later. </p>";
+                                     request.setAttribute("processResult",userUnconfirmedText);
+                                     requestDispatcher.forward(request,response);
+                                     System.out.println("Request sent");
+                                        %>
+                                            <script>
+                                            window.setTimeout(function(){
+
+                                            // Move to a new location or you can do something else
+                                            window.location.href = "display.jsp";
+
+                                            }, 5000);
+                                            </script>
+                                        <%
+                                     break;
+                            case -1: System.out.println("User booking not found");
+                                String userNotFoundText = "<h2> User Booking Check </h2> \n" + "<p> Your booking has not been found in our records. </p>";
+                                request.setAttribute("processResult",userNotFoundText);
+                                requestDispatcher.forward(request,response);
+                                System.out.println("Request sent");
+                                %>
+                                    <script>
+                                        window.setTimeout(function(){
+
+                                            // Move to a new location or you can do something else
+                                            window.location.href = "display.jsp";
+
+                                        }, 5000);
+                                    </script>
+                                <%
+                                break;
+                      }
             }
-        }
+                                    }
         %>
 
 </body>

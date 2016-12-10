@@ -11,7 +11,7 @@
 		<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 		<link rel="shortcut icon" href="http://i.imgur.com/RdtMmPg.png"/>
         
-        <script id='pp-cfp' data-env='beta' data-token='ab1fe69b24e31bd5c7adeefec9ec3250338db4364e7c0f4a1ef321c2ad140cdf'>(function(d){var s=d.createElement('script'),c=d.createElement('link');s.src='https://beta.prodpad.com/static/js/prodpad-cfp.js';s.async=1;c.href='https://beta.prodpad.com/static/css/prodpad-cfp.css';c.rel='stylesheet';document.head.appendChild(c);document.head.appendChild(s);})(document);</script>
+       
         <script type="text/javascript" src="scripts.js"></script>
         
 	</head>
@@ -54,7 +54,9 @@
 			color: white;
 		}
         
-       
+        #disp{
+            margin:auto;
+        }
 
 		
 	</style>
@@ -74,11 +76,7 @@
                 <a class="navbar-brand"><img src = "http://i.imgur.com/gnSKAbk.png" style = "height:30px;" /></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <%
-            	String content = (String)request.getAttribute("processResult");
-            	PrintWriter writer = response.getWriter();
-		        writer.println(content);
-            %>
+            
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                 	<li><a href=index.jsp>Home</a></li>
@@ -91,6 +89,12 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
+    <div id = "disp">
+    <%
+            	String content = (String)request.getAttribute("processResult");
+            	PrintWriter writer = response.getWriter();
+		        writer.println(content);
+            %>
+    </div>        
     </body>
 </html>   

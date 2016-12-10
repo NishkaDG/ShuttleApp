@@ -1,13 +1,15 @@
-import org.scalatest._
+import in.edu.ashoka.TransportApp.Shuttle
+
 
 class ShuttleSpec extends FlatSpec {
 	"A Shuttle" should "store bookings" in{
 		val testShuttle1: Shuttle = Shuttle("13-12-2016 09:00", "Campus", 12)
 		var rv: Int = 0
-		for(var i <- 1 to 12){
+		var i: Int = 0
+		for(i <- 1 to 12){
 			assert(testShuttle1.bookSeat("A")==1)
 		}
-		for(var i <- 13 to 24){
+		for(i <- 13 to 24){
 			assert(testShuttle1.bookSeat("B")==0)
 		}
 		assert(testShuttle1.bookSeat("C")==2)

@@ -180,7 +180,7 @@ public class Shuttle
         {
             try
             {
-                this.waitlist[this.numwaitlisted+1]=id;
+                this.waitlist[this.numwaitlisted]=id;
                 this.numwaitlisted++;
                 return 0;
             }
