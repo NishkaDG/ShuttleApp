@@ -53,10 +53,10 @@ public class Bookings {
         Calendar newCal=Calendar.getInstance();
         newCal.set(year, month, day);
         String whichFile = getFileName(newCal.get(Calendar.DAY_OF_WEEK));
-        String wdaycj = "campus_to_jahangirpuri_"+whichFile+".txt";
-        String wdayjc = "jahangirpuri_to_campus_"+whichFile+".txt";
-        File cfile = new File("src" + File.separator + "main" + File.separator + "resources" + File.separator + wdaycj);
-        File jfile = new File("src" + File.separator + "main" + File.separator + "resources" + File.separator + wdayjc);
+        String wdaycj = "C:/ShuttleProject/campus_to_jahangirpuri_weekend.txt";
+        String wdayjc = "C:/ShuttleProject/jahangirpuri_to_campus_weekend.txt";
+        File cfile = new File(wdaycj);
+        File jfile = new File(wdayjc);
         createLists(cfile, formattedDate, "Jahangirpuri", fromCampus);
         createLists(jfile, formattedDate, "Campus", fromStation);
         }
