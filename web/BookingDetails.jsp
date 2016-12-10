@@ -4,7 +4,8 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.ParseException" %>
 <%@ page import="in.edu.ashoka.TransportApp.MainApplication" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" language="java" errorPage="Error.jsp" %>
+<%@ page import="java.awt.print.Book" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
     <title>Booking is being processed | Ashoka Shutlle Booking System</title>
@@ -81,6 +82,7 @@
             //String finalDT = combiDT.replaceAll("\\s+","");
             System.out.println("finalDT = "+combiDT);
             int BookingResult = MainApplication.BookUser(name,combiDT,destination);
+            System.out.println(BookingResult);
             switch(BookingResult){
                 case 1: System.out.println("Booking successful!");
                 String confirmText = "<h2> Booking successful!</h2>\n\n"+"Name: "+name+"\n"+"Destination: "+destination+"\n"+"Date: "+formattedDate+"\n"+"Time: "+time;
@@ -90,7 +92,12 @@
                 System.out.println("Request sent");
                 %>
                 <script>
-                    window.location = 'display.jsp';
+                    window.setTimeout(function(){
+
+                        // Move to a new location or you can do something else
+                        window.location.href = "display.jsp";
+
+                    }, 5000);
                 </script>
                 <%
                             case -1: System.out.println("Booking alert");

@@ -36,7 +36,7 @@ public class Shuttle
     Shuttle(String t, String goingTo, int ns)
     {
         numSeats=ns;
-        empty=numSeats;
+        empty=12;
         waitlist=initArray(new String[numSeats]);
         numwaitlisted=0;
         names=initArray(new String[numSeats]);
@@ -175,7 +175,7 @@ public class Shuttle
         if(this.empty>0)
         {
             this.names[12-this.empty]=id;
-            this.empty++;
+            this.empty--;
             return 1;
         }
         else
