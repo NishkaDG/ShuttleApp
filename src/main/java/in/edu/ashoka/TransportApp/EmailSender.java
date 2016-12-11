@@ -8,11 +8,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Mayukh Nair on 08-Dec-16.
+/**Generates and sends emails on submission of a feedback form
+ * 
+ * @author Mayukh Nair
  */
 public class EmailSender{
-
+    
+    /**Sends emails to admin (as of now, Mayukh) upon submission of feedback
+     * 
+     * @param name Name of user submitting feedback
+     * @param email email ID of that user
+     * @param comment Feedback submitted
+     * @return 0 if email sent successfully; 1 otherwise
+     */
     public int sendFeedback(String name, String email, String comment)  {
 
         Email feedbackMail = new SimpleEmail();

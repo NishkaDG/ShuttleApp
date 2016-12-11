@@ -59,7 +59,10 @@ public class DBScribe {
 //        );
 //        DBCheckThread.start();
 //    }
-    
+    /**Adds names of confirmed bookings to database; creates a database if it does not already exist.
+     * 
+     * @param list The list of names in String form
+     */
     public void addToConfirmedList(String list){
         
         try{
