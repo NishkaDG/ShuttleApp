@@ -14,7 +14,7 @@ class Sweeper extends TimerTask{
     public void run() {
     Calendar c=Calendar.getInstance();
     String formattedDate=c.get(Calendar.DATE)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.YEAR)+" "+c.get(Calendar.HOUR)+":"+c.get(Calendar.MINUTE);
-    Bookings.cleanUp(formattedDate, 1);
-    Bookings.cleanUp(formattedDate, 2);
+    Bookings.accessData(formattedDate, "Campus", 2);
+    Bookings.accessData(formattedDate, "Jahangirpuri", 2);
     }
 }

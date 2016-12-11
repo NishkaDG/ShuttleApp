@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -24,6 +25,10 @@ public class Bookings {
     static HashMap<String, Shuttle> fromCampus = new HashMap<String, Shuttle>();
     /**Contains key, value pairs of the departure timings from Delhi and the Shuttle-type objects */
     static HashMap<String, Shuttle> fromStation = new HashMap<String, Shuttle>();
+    /**Contains the departure timings from campus */
+    static ArrayList fcTimings= new ArrayList();
+    /**Contains the departure timings from the station*/
+    static ArrayList fsTimings= new ArrayList();
     
     /**This method runs when the program begins. 
      * It creates the Shuttle objects for the present day and the next 8 days
@@ -58,8 +63,8 @@ public class Bookings {
         String wdayjc = "C:/ShuttleProject/jahangirpuri_to_campus_"+whichFile+".txt";
         File cfile = new File(wdaycj);
         File jfile = new File(wdayjc);
-        createLists(cfile, formattedDate, "Jahangirpuri", fromCampus);
-        createLists(jfile, formattedDate, "Campus", fromStation);
+        createLists(cfile, formattedDate, "Jahangirpuri", fromCampus, fcTimings);
+        createLists(jfile, formattedDate, "Campus", fromStation, fsTimings);
         }
     
     /**Returns which category - weekday, weekend or Friday - is required.
@@ -83,10 +88,11 @@ public class Bookings {
      * @param address the address of the file with the timings
      * @param date the date for which the timings are to be read
      * @param goingTo the destination
-     * @param al the relevant Hashmap
+     * @param hl the relevant Hashmap
+     * @param a1 the relevant ArrayList
      * @throws IOException in case of errors
      */
-    static void createLists(File address, String date, String goingTo, HashMap al) throws IOException {
+    static void createLists(File address, String date, String goingTo, HashMap h1, ArrayList a1) throws IOException {
 
         FileReader timings = null;
         try {
@@ -101,15 +107,18 @@ public class Bookings {
                     t = t.replaceAll("\\s+", "");
                     t = date + " " + t;
                     Shuttle nextOne = new Shuttle(t, goingTo, 12);
-                    al.put(t, nextOne);
+                    h1.put(t, nextOne);
+                    a1.add(t);
                     t = "";
                 } else {
                     t = t + (char) fc;
                 }
             }
             if (t.length() > 0) {
-                Shuttle nextOne = new Shuttle(date+" "+t, goingTo, 12);
-                al.put(date+" "+t, nextOne);
+                t=date+" "+t;
+                Shuttle nextOne = new Shuttle(t, goingTo, 12);
+                h1.put(t, nextOne);
+                a1.add(t);
             }
         } finally {
             if (timings != null) {
@@ -183,6 +192,54 @@ public class Bookings {
         return toBookOrCancel;
     }
 
+    /**Enables safe modification of the hashmaps
+     * 
+     * @param currDate the date and time to be compared against
+     * @param currMap the Hashmap to be modified
+     * @param ch the user's choice (whether to get details for SMS or to delete old data)
+     */
+    static synchronized String[] accessData(String currDate, String currMap, int ch)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        switch(ch){
+            case 1:
+                try{
+                    Date d1 = format.parse(currDate);
+                    String[] msgs;
+                    ArrayList timingsList;
+                    if(currMap.equals("Campus")){
+                        timingsList=fsTimings;
+                    }
+                    else{
+                        timingsList=fcTimings;
+                    }
+                    for(int j=0; j<timingsList.size(); j++)
+                    {
+                        Date d2=format.parse((timingsList.get(j)).toString());
+                        long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
+                        if(diff==5)
+                        {
+                            msgs=forSMS((timingsList.get(j)).toString(), currMap);
+                        }
+                    }
+                }
+                catch(ParseException p){
+                    return new String[2];
+                }
+            case 2:
+                if(currMap.equals("Campus")){
+                    cleanUp(currDate, 0);
+                }
+                else{
+                    cleanUp(currDate, 1);
+                }
+                return new String[2];
+            default:
+                System.out.println("Error in method accessData");
+                return new String[2];
+        }
+        }
+    
     /**Takes a hashmap and removes all entries for shuttles which have departed.
      * 
      * @param pastDate the date which has passed
@@ -202,7 +259,8 @@ public class Bookings {
         Iterator it=toModify.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<String, Shuttle> entry=(Map.Entry<String, Shuttle>) it.next();
-            if(isAfter(entry.getKey(), pastDate))
+            String beingChecked=entry.getKey();
+            if(isAfter(beingChecked, pastDate))
             {
                 it.remove();
             }
