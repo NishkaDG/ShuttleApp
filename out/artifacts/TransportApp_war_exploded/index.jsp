@@ -187,7 +187,6 @@
 	    	<div class="row">
 		    	<div class="col-md-6 col-md-offset-3">
 		    		<center>
-		    			<p>Available Services</p>
 		    			<p>Please choose one of the options below according to your needs.</p><hr />
 		    			<p><a href="https://www.ashoka.edu.in/shuttle-service/">Please click here for the shuttle schedule</a></p>
 		    		</center>
