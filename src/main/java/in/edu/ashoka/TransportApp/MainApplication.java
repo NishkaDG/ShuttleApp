@@ -82,8 +82,7 @@ public class MainApplication extends HttpServlet{
 //        } catch (URISyntaxException e) {
 //            e.printStackTrace();
 //        }
-
-
+ 
         /**Will create new Shuttle-type objects every day at midnight.
          *
          */
