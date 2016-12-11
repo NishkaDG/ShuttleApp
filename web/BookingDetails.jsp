@@ -102,6 +102,7 @@
                                 }, 5000);
                             </script>
                             <%
+                                break;
                             case 0: System.out.println("Booking added to waitlist");
                                     String waitingText = "<h2> You've been added to a waitlist </h2>\n\n"+"Name: "+name+"\n"+"Destination: "+destination+"\n"+"Date and Time: "+date+"\n \n"+" <p> You can check your status using Booking Status anytime, or talk to the guards minutes before the shuttle departs. <p>";
                                     request.setAttribute("processResult",waitingText);
@@ -150,19 +151,19 @@
                                     </script>
                                     <%
                                     break;
+                                            }
                                         }
-              /* line */
 
               if("Booking Status".equals(bookingStatus)){
                   System.out.println("User opted to check booking, it seems");
-
+                  int StatusResult = 3;
                   try {
-                      BookingResult = MainApplication.manager(2,name,date,destination);
+                      StatusResult = MainApplication.manager(2,name,date,destination);
                       } catch (ParseException e) {
                         e.printStackTrace();
                       }
-                      System.out.println(BookingResult);
-                      switch(BookingResult){
+                      System.out.println(StatusResult);
+                      switch(StatusResult){
                           case 1: System.out.println("User is booked");
                                   String userBookedText = "<h2> User Booking Check </h2> \n" + "<p> You are booked currently on the shuttle. Details are as follows: </p>\n\n"+"Name: "+name+"\n"+"Destination: "+destination+"\n"+"Date and Time: "+date+"\n \n"+" <p> You can check your status using Booking Status anytime, or talk to the guards minutes before the shuttle departs. <p>";
                                   request.setAttribute("processResult",userBookedText);
@@ -179,8 +180,8 @@
                                     </script>
                                     <%
                                     break;
-                            case 0: System.out.println("User is not confirmed");
-                                     String userUnconfirmedText = "<h2> User Booking Check </h2> \n" + "<p> Your booking is under waitlisting and has not been confirmed yet. Please Check later. </p>";
+                            case 0: System.out.println("User booking not found");
+                                     String userUnconfirmedText = "<h2> User Booking Check </h2> \n" + "<p> Your booking has not been found in our records. </p>";
                                      request.setAttribute("processResult",userUnconfirmedText);
                                      requestDispatcher.forward(request,response);
                                      System.out.println("Request sent");
@@ -195,8 +196,8 @@
                                             </script>
                                         <%
                                      break;
-                            case -1: System.out.println("User booking not found");
-                                String userNotFoundText = "<h2> User Booking Check </h2> \n" + "<p> Your booking has not been found in our records. </p>";
+                            case -1: System.out.println("User did not request status properly");
+                                String userNotFoundText = "<h2> User Booking Check </h2> \n" + "<p> You have submitted incorrect data while requesting the booking. If the problem persists repeatedly, please contact us through the Feedback section. </p>";
                                 request.setAttribute("processResult",userNotFoundText);
                                 requestDispatcher.forward(request,response);
                                 System.out.println("Request sent");
@@ -213,8 +214,52 @@
                                 break;
                       }
             }
-                                    }
-        %>
+
+            if("Cancellation".equals(bookingStatus)){
+                System.out.println("User opted to cancel booking, it seems");
+                int StatusResult = 3;
+                try {
+                    StatusResult = MainApplication.manager(1,name,date,destination);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(StatusResult);
+                switch(StatusResult){
+                    case 1: System.out.println("User has cancelled booking");
+                        String userBookedText = "<h2> Cancellation Request </h2> \n" + "<p> Your booking has been successfully cancelled. </p>";
+                        request.setAttribute("processResult",userBookedText);
+                        requestDispatcher.forward(request,response);
+                        System.out.println("Request sent");
+                        %>
+                            <script>
+                                window.setTimeout(function(){
+
+                                    // Move to a new location or you can do something else
+                                    window.location.href = "display.jsp";
+
+                                }, 5000);
+                            </script>
+                        <%
+                        break;
+                    case -1: System.out.println("User cancellation error");
+                        String userUnconfirmedText = "<h2> User Booking Check </h2> \n" + "<p> Your booking based on provided details was not retrieved by the system. Please try again </p>";
+                        request.setAttribute("processResult",userUnconfirmedText);
+                        requestDispatcher.forward(request,response);
+                        System.out.println("Request sent");
+                    %>
+                    <script>
+                        window.setTimeout(function(){
+
+                            // Move to a new location or you can do something else
+                            window.location.href = "display.jsp";
+
+                        }, 5000);
+                    </script>
+                    <%
+                    break;
+                }
+            }
+                    %>
 
 </body>
 </html>
