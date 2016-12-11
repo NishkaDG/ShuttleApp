@@ -54,7 +54,7 @@ public class MainApplication extends HttpServlet{
      * @param ch User's choice
      * @param name User's name
      * @param datetime Timing of departure of the shuttle
-     * @param destination Destination of the 
+     * @param destination Destination of the shuttle
      * @throws ParseException
      * @return Whether success or failure
      */
@@ -86,21 +86,10 @@ public class MainApplication extends HttpServlet{
      * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
-        
-
-//        SMSPush messageTool = new SMSPush();
-//        try {
-//            messageTool.pushMessage("Someday I'll find whoever thought of embedding Tomcat in Java apps and beat him up with a tire iron");
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
- 
+    }
         /**Will create new Shuttle-type objects every day at midnight.
          *
          */
-    }
-
-    //MainApplication ends
     static void refreshSchedule() {
         Timer timer = new Timer();
         Calendar date = Calendar.getInstance();
@@ -109,10 +98,7 @@ public class MainApplication extends HttpServlet{
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         /**Schedule to run every day */
-        timer.schedule(
-                new everyDay(),
-                date.getTime(),
-                1000 * 60 * 60 * 24
+        timer.schedule(new everyDay(), date.getTime(), 1000 * 60 * 60 * 24
         );
     }
 

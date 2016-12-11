@@ -5,18 +5,19 @@ package in.edu.ashoka.TransportApp;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.TimerTask;
-import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
 
 /**This will obtain the names 5 minutes before departure.
  *
  * @author Nishka
  */
 public class CheckTimings extends TimerTask {
+    
+    /**To run the thread. 
+     * This function will obtain the lists from method accessData in class Bookings
+     * and send the SMS
+     * 
+     */
     @Override
     public void run(){
         SMSPush smsPush = new SMSPush();
@@ -28,13 +29,21 @@ public class CheckTimings extends TimerTask {
         goingToCampus = Bookings.accessData(t1, "Campus", 1);
         leavingCampus = Bookings.accessData(t1, "Jahangirpuri", 1);
         try {
-            smsPush.pushMessage(leavingCampus[0], "+917898214528");
+            if(leavingCampus[0].length()>0){
+                smsPush.pushMessage(leavingCampus[0], "+917898214528");
+            }
             System.out.println("Confirmed list for Jahangirpuri dispatched");
-            smsPush.pushMessage(leavingCampus[1], "+917898214528");
+            if(leavingCampus[1].length()>0){
+                smsPush.pushMessage(leavingCampus[1], "+917898214528");
+            }
             System.out.println("Waitlist for Jahangirpuri dispatched");
-            smsPush.pushMessage(goingToCampus[0], "+917898214528");
+            if(goingToCampus[0].length()>0){
+                smsPush.pushMessage(goingToCampus[0], "+917898214528");
+            }
             System.out.println("Confirmed list for Campus dispatched");
+            if(goingToCampus[1].length()>0){
             smsPush.pushMessage(goingToCampus[1], "+917898214528");
+            }
             System.out.println("Waitlist for Campus dispatched");
         }
         catch (URISyntaxException e){
