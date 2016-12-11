@@ -5,6 +5,7 @@
 <%@ page import="java.text.ParseException" %>
 <%@ page import="in.edu.ashoka.TransportApp.MainApplication" %>
 <%@ page import="java.awt.print.Book" %>
+<%@ page import="in.edu.ashoka.TransportApp.DBScribe" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
@@ -79,7 +80,7 @@
 
             if("Booking".equals(bookingStatus)){
             System.out.println("User opted to book, it seems");
-            int BookingResult = 3;
+                int BookingResult = 3;
             try {
                     BookingResult = MainApplication.manager(0,name,date,destination);
             } catch (ParseException e) {

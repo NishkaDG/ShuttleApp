@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 		<link rel="shortcut icon" href="http://i.imgur.com/RdtMmPg.png"/>
-        <script id='pp-cfp' data-env='beta' data-token='ab1fe69b24e31bd5c7adeefec9ec3250338db4364e7c0f4a1ef321c2ad140cdf'>(function(d){var s=d.createElement('script'),c=d.createElement('link');s.src='https://beta.prodpad.com/static/js/prodpad-cfp.js';s.async=1;c.href='https://beta.prodpad.com/static/css/prodpad-cfp.css';c.rel='stylesheet';document.head.appendChild(c);document.head.appendChild(s);})(document);</script>
         <script type="text/javascript" src="scripts.js"></script>
         
         </head>

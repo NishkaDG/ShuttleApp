@@ -3,6 +3,7 @@ package in.edu.ashoka.TransportApp;
 
 /**Necessary imports */
 import java.net.URISyntaxException;
+import java.sql.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -24,7 +25,8 @@ public class MainApplication extends HttpServlet{
      * To execute the program
      */
 
-    public void init() throws ServletException{
+
+    public void init() throws ServletException {
         System.out.println("MainApp is running");
         try {
             Bookings.initialise();
@@ -34,6 +36,16 @@ public class MainApplication extends HttpServlet{
         checkToSMS();
         refreshSchedule();
         deleteOld();
+        checkToSMS();
+        SMSPush smsPush = new SMSPush();
+        try {
+            smsPush.pushMessage("Test","+917898214528");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        DBScribe dbScribe = new DBScribe();
+//        dbScribe.checkDB();
+        dbScribe.addToConfirmedList("Yo");
     }
     
     /**
