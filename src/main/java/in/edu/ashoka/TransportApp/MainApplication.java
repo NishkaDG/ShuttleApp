@@ -31,9 +31,9 @@ public class MainApplication extends HttpServlet{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        checkToSMS();
         refreshSchedule();
         deleteOld();
-        checkToSMS();
     }
     
     /**

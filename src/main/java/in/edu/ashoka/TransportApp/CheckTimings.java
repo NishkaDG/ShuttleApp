@@ -27,24 +27,28 @@ public class CheckTimings extends TimerTask {
             Date d1 = format.parse(t1);
             HashMap fc=Bookings.fromCampus;
             HashMap fs=Bookings.fromStation;
-            Iterator it=fc.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry<String, Shuttle> entry=(Map.Entry<String, Shuttle>) it.next();
-                Date d2=format.parse(entry.getKey());
-                long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
-                if(diff==5)
-                {
-                    leavingCampus=Bookings.forSMS(entry.getKey(), "Jahangirpuri");
+            synchronized (fc){
+                Iterator it=fc.entrySet().iterator();
+                while(it.hasNext()){
+                    Map.Entry<String, Shuttle> entry=(Map.Entry<String, Shuttle>) it.next();
+                    Date d2=format.parse(entry.getKey());
+                    long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
+                    if(diff==5)
+                    {
+                        leavingCampus=Bookings.forSMS(entry.getKey(), "Jahangirpuri");
+                    }
                 }
             }
-            it=fs.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry<String, Shuttle> entry=(Map.Entry<String, Shuttle>) it.next();
-                Date d2=format.parse(entry.getKey());
-                long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
-                if(diff==5)
-                {
-                    goingToCampus=Bookings.forSMS(entry.getKey(), "Campus");
+            synchronized (fs){
+                Iterator it=fs.entrySet().iterator();
+                while(it.hasNext()){
+                    Map.Entry<String, Shuttle> entry=(Map.Entry<String, Shuttle>) it.next();
+                    Date d2=format.parse(entry.getKey());
+                    long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
+                    if(diff==5)
+                    {
+                        goingToCampus=Bookings.forSMS(entry.getKey(), "Campus");
+                    }
                 }
             }
         }
