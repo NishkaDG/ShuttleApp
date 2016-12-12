@@ -194,7 +194,7 @@
 		    			<p><a href="https://www.ashoka.edu.in/shuttle-service/">Please click here for the shuttle schedule</a></p>
 		    		</center>
 
-		    		<form action="#" method="POST" id="service">
+		    		<form action="BookingDetails.jsp" method="POST" id="service">
 		    			
 		    			<div class="form-group text-center">
 			    			<input type="radio" name="booking" class="ourservices" value="Booking">Booking</input>
