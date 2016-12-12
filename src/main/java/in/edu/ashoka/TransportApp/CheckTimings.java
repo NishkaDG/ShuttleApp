@@ -26,8 +26,8 @@ public class CheckTimings extends TimerTask {
         String[] goingToCampus;
         String[] leavingCampus;
         String t1 = now.get(Calendar.DAY_OF_MONTH)+"-"+now.get(Calendar.MONTH)+"-"+now.get(Calendar.YEAR)+" "+now.get(Calendar.HOUR)+":"+now.get(Calendar.MINUTE);
-        goingToCampus = Bookings.accessData(t1, "Campus", 1);
-        leavingCampus = Bookings.accessData(t1, "Jahangirpuri", 1);
+        goingToCampus = Bookings.accessData(t1, "Campus", 1, new String[2]);
+        leavingCampus = Bookings.accessData(t1, "Jahangirpuri", 1, new String[2]);
         try {
             if(leavingCampus[0].length()>0){
                 smsPush.pushMessage(leavingCampus[0], "+917898214528");

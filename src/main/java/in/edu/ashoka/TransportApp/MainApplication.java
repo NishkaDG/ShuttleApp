@@ -33,19 +33,20 @@ public class MainApplication extends HttpServlet{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        checkToSMS();
         refreshSchedule();
         deleteOld();
         checkToSMS();
         SMSPush smsPush = new SMSPush();
-        try {
-            smsPush.pushMessage("Test","+917898214528");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        DBScribe dbScribe = new DBScribe();
-//        dbScribe.checkDB();
-        dbScribe.addToConfirmedList("Yo");
+
+        
+//        try {
+//            smsPush.pushMessage("Test","+917898214528");
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        DBScribe dbScribe = new DBScribe();
+////        dbScribe.checkDB();
+//        dbScribe.addToConfirmedList("Yo");
     }
     
     /**
@@ -58,34 +59,26 @@ public class MainApplication extends HttpServlet{
      * @throws ParseException
      * @return Whether success or failure
      */
-    public static int manager(int ch, String name, String datetime, String destination) throws ParseException{
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date currentDate = new Date();
-        Date selectedDate = sdf.parse(datetime);
-        if(selectedDate.after(currentDate))
-        {
-            Shuttle toModify = Bookings.toBeChanged(datetime, destination);
-            switch(ch)
-            {
-                case 0:
-                    return Bookings.book(name, toModify);
-                case 1:
-                    return Bookings.cancelBooking(name, toModify);
-                case 2:
-                    return Bookings.checkIfBooked(name, toModify);
-                default:
-                    return -1;
-            }
-        }
-        return -1;
+    public static int manager(int ch, String name, String datetime, String destination){
+        String[] toBePassed=new String[4];
+        toBePassed[0]=Integer.toString(ch);
+        toBePassed[1]=name;
+        toBePassed[2]=datetime;
+        toBePassed[3]=destination;
+        String[] rv=Bookings.accessData("", "", 3, toBePassed);
+        return Integer.parseInt(rv[0]);
     }
     
     /**To run the program
      * 
      * @param args not used
-     * @throws IOException 
+     * @throws ServletException 
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws ServletException {
+        MainApplication obj=new MainApplication();
+        obj.init();
+        System.out.println("And output is "+manager(0, "N", "16-12-2016 11:00", "Campus"));
+        
     }
         /**Will create new Shuttle-type objects every day at midnight.
          *

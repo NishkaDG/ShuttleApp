@@ -20,7 +20,8 @@ class everyDay extends TimerTask {
         Bookings.createNextDay(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
     }
     catch(Exception e){
-        System.out.println("ERROR.");
+        System.out.println("everyDay has failed");
+        e.printStackTrace();
     }
   }
 }

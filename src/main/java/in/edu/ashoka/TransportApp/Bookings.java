@@ -22,13 +22,13 @@ import java.text.ParseException;
 public class Bookings {
 
     /**Contains key, value pairs of the departure timings from campus and the Shuttle-type objects */
-    static HashMap<String, Shuttle> fromCampus = new HashMap<String, Shuttle>();
+    private static HashMap<String, Shuttle> fromCampus = new HashMap<String, Shuttle>();
     /**Contains key, value pairs of the departure timings from Delhi and the Shuttle-type objects */
-    static HashMap<String, Shuttle> fromStation = new HashMap<String, Shuttle>();
+    private static HashMap<String, Shuttle> fromStation = new HashMap<String, Shuttle>();
     /**Contains the departure timings from campus */
-    static ArrayList fcTimings= new ArrayList();
+    private static ArrayList fcTimings= new ArrayList();
     /**Contains the departure timings from the station*/
-    static ArrayList fsTimings= new ArrayList();
+    private static ArrayList fsTimings= new ArrayList();
     
     /**This method runs when the program begins. 
      * It creates the Shuttle objects for the present day and the next 8 days
@@ -59,8 +59,8 @@ public class Bookings {
         Calendar newCal=Calendar.getInstance();
         newCal.set(year, month, day);
         String whichFile = getFileName(newCal.get(Calendar.DAY_OF_WEEK));
-        String wdaycj = "C:/ShuttleProject/campus_to_jahangirpuri_"+whichFile+".txt";
-        String wdayjc = "C:/ShuttleProject/jahangirpuri_to_campus_"+whichFile+".txt";
+        String wdaycj = "C:/ShuttleApp/campus_to_jahangirpuri_"+whichFile+".txt";
+        String wdayjc = "C:/ShuttleApp/jahangirpuri_to_campus_"+whichFile+".txt";
         File cfile = new File(wdaycj);
         File jfile = new File(wdayjc);
         createLists(cfile, formattedDate, "Jahangirpuri", fromCampus, fcTimings);
@@ -72,7 +72,7 @@ public class Bookings {
      * @param day the number of the day of week
      * @return which category of the schedule should be read
      */
-    static String getFileName(int day) {
+    private static String getFileName(int day) {
         if (day >= 2 && day <= 5) {
             return "weekday";
         } else if (day == 6) {
@@ -82,7 +82,7 @@ public class Bookings {
         }
     }
     
-    /*Reads Shuttle timings from a file and adds the relevant Shuttle type object
+    /**Reads Shuttle timings from a file and adds the relevant Shuttle type object
      * to the respective hashmap.
      * 
      * @param address the address of the file with the timings
@@ -94,6 +94,7 @@ public class Bookings {
      */
     static void createLists(File address, String date, String goingTo, HashMap h1, ArrayList a1) throws IOException {
 
+        System.out.println("Now creating for day "+date);
         FileReader timings = null;
         try {
             timings = new FileReader(address);//attempts to read the file
@@ -106,6 +107,7 @@ public class Bookings {
                 if (fc == 10) {
                     t = t.replaceAll("\\s+", "");
                     t = date + " " + t;
+                    //System.out.println("Working for "+t);
                     Shuttle nextOne = new Shuttle(t, goingTo, 12);
                     h1.put(t, nextOne);
                     a1.add(t);
@@ -133,7 +135,7 @@ public class Bookings {
      * @param toBook the shuttle to book a seat on
      * @return 1 for successful booking; 0 for waitlisted; 2 for waitlist full; -1 for incorrect details or failure
      */
-    public static int book(String id, Shuttle toBook) {
+    private static int book(String id, Shuttle toBook) {
         try{
             return toBook.bookSeat(id);
         }
@@ -149,7 +151,7 @@ public class Bookings {
      * @param toCancel the shuttle to book a seat on
      * @return 1 if cancelled, -1 if incorrect details
      */
-    public static int cancelBooking(String id, Shuttle toCancel) {
+    private static int cancelBooking(String id, Shuttle toCancel) {
         try{
             toCancel.cancel(id);
             return 1;
@@ -166,7 +168,7 @@ public class Bookings {
      * @param toCheck the shuttle to be checked
      * @return True if booked, false otherwise
      */
-    public static int checkIfBooked(String id, Shuttle toCheck) {
+    private static int checkIfBooked(String id, Shuttle toCheck) {
         try{
             return toCheck.checkForBooking(id);
         }
@@ -182,6 +184,9 @@ public class Bookings {
      * @return the Shuttle object in the hashmap with key identical to timing
      */
     public static Shuttle toBeChanged(String timing, String destination) {
+        System.out.println("Now in toBeChanged");
+        System.out.println(timing);
+        System.out.println(destination);
         HashMap<String, Shuttle> toModify;
         if (destination.equals("Campus")) {
             toModify = fromStation;
@@ -197,35 +202,18 @@ public class Bookings {
      * @param currDate the date and time to be compared against
      * @param currMap the Hashmap to be modified
      * @param ch the user's choice (whether to get details for SMS or to delete old data)
+     * @param managerData[] Will be used to pass data from method manager()
+     * @return String[] the Array to be returned
      */
-    static synchronized String[] accessData(String currDate, String currMap, int ch)
+    static synchronized String[] accessData(String currDate, String currMap, int ch, String[] managerData)
     {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String[] rv=new String[2];
+        rv[0]="";
+        rv[1]="";
         switch(ch){
             case 1:
-                try{
-                    Date d1 = format.parse(currDate);
-                    String[] msgs;
-                    ArrayList timingsList;
-                    if(currMap.equals("Campus")){
-                        timingsList=fsTimings;
-                    }
-                    else{
-                        timingsList=fcTimings;
-                    }
-                    for(int j=0; j<timingsList.size(); j++)
-                    {
-                        Date d2=format.parse((timingsList.get(j)).toString());
-                        long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
-                        if(diff==5)
-                        {
-                            msgs=forSMS((timingsList.get(j)).toString(), currMap);
-                        }
-                    }
-                }
-                catch(ParseException p){
-                    return new String[2];
-                }
+                return fiveMinutesBefore(currDate, currMap);
             case 2:
                 if(currMap.equals("Campus")){
                     cleanUp(currDate, 0);
@@ -233,10 +221,14 @@ public class Bookings {
                 else{
                     cleanUp(currDate, 1);
                 }
-                return new String[2];
+                return rv;
+            case 3:
+                rv[0]=Integer.toString(runEverything(managerData));
+                rv[1]="";
+                return rv;
             default:
                 System.out.println("Error in method accessData");
-                return new String[2];
+                return rv;
         }
         }
     
@@ -245,7 +237,7 @@ public class Bookings {
      * @param pastDate the date which has passed
      * @param i 1 for cleaning HashMap fromCampus; 2 for cleaning HashMap fromStation
      */
-    static void cleanUp(String pastDate, int i)
+    private static void cleanUp(String pastDate, int i)
     {
         HashMap<String, Shuttle> toModify;
         if(i==1)
@@ -273,7 +265,7 @@ public class Bookings {
      * @param date2 the date to compare
      * @return whether date2 is before date1
      */
-    static boolean isAfter(String date1, String date2) 
+    private static boolean isAfter(String date1, String date2) 
     {
         try{
             SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -293,7 +285,7 @@ public class Bookings {
      * @param destination the destination
      * @return Array containing the names
      */
-    public static String[] forSMS(String timing, String destination)
+    private static String[] forSMS(String timing, String destination)
     {
         String[] toSend = new String[2];
         Shuttle tbc = toBeChanged(timing, destination);
@@ -306,5 +298,90 @@ public class Bookings {
             toSend[1]="";
         }
         return toSend;
+    }
+    
+    /**Enables booking, cancellation and confirmation.
+     * 
+     * @param details User's choice and details
+     * @return 1 if successful; -1 if error; 0 if waitlisted (for booking attempt) and 2 for waitlist full
+     */
+    private static int runEverything(String[] details){
+        try{
+            int ch=Integer.parseInt(details[0]);
+            String name=details[1];
+            String datetime=details[2];
+            String destination=details[3];
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            Calendar cd=Calendar.getInstance();
+            Date currentDate = sdf.parse(cd.get(Calendar.DAY_OF_MONTH)+"-"+cd.get(Calendar.MONTH)+"-"+cd.get(Calendar.YEAR)+" "+cd.get(Calendar.HOUR)+":"+cd.get(Calendar.MINUTE));
+            Date selectedDate = sdf.parse(datetime);
+            if(selectedDate.after(currentDate))
+            {
+                Shuttle toModify = Bookings.toBeChanged(datetime, destination);
+                //System.out.println(toModify);
+                switch(ch)
+                {
+                    case 0:
+                        int r=Bookings.book(name, toModify);
+                        System.out.println(r);
+                        return r;
+                    case 1:
+                        return Bookings.cancelBooking(name, toModify);
+                    case 2:
+                        return Bookings.checkIfBooked(name, toModify);
+                    default:
+                        return -1;
+                }
+            }
+            else{
+            System.out.println("Oops! Main Application has failed; Check the Timing!");
+            return -1;
+            }
+            }
+        catch(ParseException p){
+            System.out.println("runEverything is unable to parse dates.");
+            return -1;
+        }
+        catch(ArrayIndexOutOfBoundsException a){
+            System.out.println("Too few fields passed to runEverything. Check input.");
+            return -1;
+        }
+    }
+    
+    /**Returns the confirmed bookings and the waitlist for any shuttle leaving 
+     * for destination currMap five minutes from currDate
+     * 
+     * @param currDate Current date and time
+     * @param currMap Destination
+     * @return 
+     */
+    private static String[] fiveMinutesBefore(String currDate, String currMap){
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String[] msgs=new String[2];
+        msgs[0]="";
+        msgs[1]="";
+        try{
+            Date d1 = format.parse(currDate);
+            ArrayList timingsList;
+            if(currMap.equals("Campus")){
+            timingsList=fsTimings;
+            }
+            else{
+                timingsList=fcTimings;
+                }
+            for(int j=0; j<timingsList.size(); j++)
+            {
+                Date d2=format.parse((timingsList.get(j)).toString());
+                long diff=(d2.getTime()-d1.getTime())/(60*1000)%60;
+                if(diff==5)
+                {
+                    msgs=forSMS((timingsList.get(j)).toString(), currMap);
+                }
+            }
+            return msgs;
+        }
+        catch(ParseException p){
+            return msgs;
+        }
     }
 }
