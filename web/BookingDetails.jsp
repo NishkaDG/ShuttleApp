@@ -65,6 +65,7 @@
             String destination = request.getParameter("destination");
             String date = request.getParameter("date");
             System.out.println(name+" "+bookingStatus+" "+destination+" "+date);
+            DBScribe dbScribe = new DBScribe();
 
             %>
                 <div id ="space"></div>
@@ -89,6 +90,7 @@
             System.out.println(BookingResult);
             switch(BookingResult){
                             case 1: System.out.println("Booking successful!");
+                            dbScribe.addToList("confirmed",name,destination,date);
                             String confirmText = "<h2 align='center'> Booking successful!</h2> <br>"+"<p align='center'>Name: "+name+"<br>"+" Destination: "+destination+"<br>"+"Date and time: "+date+"<br></p>";
                             request.setAttribute("processResult",confirmText);
                             requestDispatcher.forward(request,response);
@@ -105,6 +107,7 @@
                             <%
                                 break;
                             case 0: System.out.println("Booking added to waitlist");
+                                    dbScribe.addToList("waitlist",name,destination,date);
                                     String waitingText = "<h2 align='center'> You've been added to a waitlist </h2><br><br>"+"<p align='center'> Name: "+name+"<br>"+"Destination: "+destination+"<br>"+"Date and Time: "+date+"</p> <br> <br>"+" <p align='center'> You can check your status using Booking Status anytime, or talk to the guards minutes before the shuttle departs. </p>";
                                     request.setAttribute("processResult",waitingText);
                                     requestDispatcher.forward(request,response);
@@ -227,6 +230,7 @@
                 System.out.println(StatusResult);
                 switch(StatusResult){
                     case 1: System.out.println("User has cancelled booking");
+                        dbScribe.addToList("cancellation",name,destination,date);
                         String userBookedText = "<h2 align='center'> Cancellation Request </h2> <br>" + "<p align='center'> Your booking has been successfully cancelled. </p>";
                         request.setAttribute("processResult",userBookedText);
                         requestDispatcher.forward(request,response);

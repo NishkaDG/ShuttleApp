@@ -25,6 +25,7 @@ public class MainApplication extends HttpServlet{
      * To execute the program
      */
 
+    DBScribe dbScribe = new DBScribe();
 
     public void init() throws ServletException {
         System.out.println("MainApp is running");
@@ -33,20 +34,12 @@ public class MainApplication extends HttpServlet{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        checkToSMS();
         refreshSchedule();
         deleteOld();
         checkToSMS();
-        SMSPush smsPush = new SMSPush();
-
-        
-//        try {
-//            smsPush.pushMessage("Test","+917898214528");
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        DBScribe dbScribe = new DBScribe();
-////        dbScribe.checkDB();
-//        dbScribe.addToConfirmedList("Yo");
+        dbScribe.initDBConn();
+//        dbScribe.restoreBackups();
     }
     
     /**
@@ -72,13 +65,13 @@ public class MainApplication extends HttpServlet{
     /**To run the program
      * 
      * @param args not used
-     * @throws ServletException 
+     * @throws ServletException
      */
     public static void main(String[] args) throws ServletException {
         MainApplication obj=new MainApplication();
         obj.init();
         System.out.println("And output is "+manager(0, "N", "16-12-2016 11:00", "Campus"));
-        
+
     }
         /**Will create new Shuttle-type objects every day at midnight.
          *
@@ -104,6 +97,7 @@ public class MainApplication extends HttpServlet{
         cleaner.schedule(new Sweeper(), 0, 1000 * 60 * 60);
 
     }
+
 
     /**
      * Runs every 5 minutes to check whether it's time to send a message to the guard.

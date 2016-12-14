@@ -83,7 +83,7 @@ public class Bookings {
         }
     }
     
-    /**Reads Shuttle timings from a file and adds the relevant Shuttle type object
+    /* Reads Shuttle timings from a file and adds the relevant Shuttle type object
      * to the respective hashmap.
      * 
      * @param address the address of the file with the timings
