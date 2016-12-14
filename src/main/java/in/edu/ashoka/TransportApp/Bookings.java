@@ -22,9 +22,9 @@ import java.text.ParseException;
 public class Bookings {
 
     /**Contains key, value pairs of the departure timings from campus and the Shuttle-type objects */
-    private static HashMap<String, Shuttle> fromCampus = new HashMap<String, Shuttle>();
+    public static HashMap<String, Shuttle> fromCampus = new HashMap<String, Shuttle>();
     /**Contains key, value pairs of the departure timings from Delhi and the Shuttle-type objects */
-    private static HashMap<String, Shuttle> fromStation = new HashMap<String, Shuttle>();
+    public static HashMap<String, Shuttle> fromStation = new HashMap<String, Shuttle>();
     /**Contains the departure timings from campus */
     private static ArrayList fcTimings= new ArrayList();
     /**Contains the departure timings from the station*/
@@ -60,6 +60,7 @@ public class Bookings {
         newCal.set(year, month, day);
         String whichFile = getFileName(newCal.get(Calendar.DAY_OF_WEEK));
         String wdaycj = "C:/ShuttleApp/campus_to_jahangirpuri_"+whichFile+".txt";
+        System.out.println(formattedDate+" "+wdaycj);
         String wdayjc = "C:/ShuttleApp/jahangirpuri_to_campus_"+whichFile+".txt";
         File cfile = new File(wdaycj);
         File jfile = new File(wdayjc);
@@ -94,37 +95,38 @@ public class Bookings {
      */
     static void createLists(File address, String date, String goingTo, HashMap h1, ArrayList a1) throws IOException {
 
-        System.out.println("Now creating for day "+date);
+        //System.out.println("Now creating for day "+date);
         FileReader timings = null;
         try {
+
             timings = new FileReader(address);//attempts to read the file
+            BufferedReader br=new BufferedReader(timings);
+            System.out.println("File has been read");
             int fc;
             String t = "";
+            String thisLine=null;
             /**
              * Reads lines of timings from the file.
              */
-            while ((fc = timings.read()) != -1) {
-                if (fc == 10) {
-                    t = t.replaceAll("\\s+", "");
-                    t = date + " " + t;
-                    //System.out.println("Working for "+t);
-                    Shuttle nextOne = new Shuttle(t, goingTo, 12);
-                    h1.put(t, nextOne);
-                    a1.add(t);
-                    t = "";
-                } else {
-                    t = t + (char) fc;
-                }
+            while((thisLine = br.readLine())!=null){
+            t = date + " " + thisLine;
+            if(date.equals("15-12-2016")){
+                System.out.println(thisLine);
             }
-            if (t.length() > 0) {
-                t=date+" "+t;
-                Shuttle nextOne = new Shuttle(t, goingTo, 12);
+            Shuttle nextOne = new Shuttle(t, goingTo, 12);
+            if(!(h1.containsKey(t))){
                 h1.put(t, nextOne);
-                a1.add(t);
+                System.out.println(t+" is added");
             }
-        } finally {
+            }
+        }
+        catch(Exception e){
+            System.out.println("createLists() says the file does not exist");
+        }
+        finally {
             if (timings != null) {
                 timings.close();
+                System.out.println("File has been closed");
             }
         }
     }
@@ -137,10 +139,13 @@ public class Bookings {
      */
     private static int book(String id, Shuttle toBook) {
         try{
-            return toBook.bookSeat(id);
+            int rv=toBook.bookSeat(id);
+            System.out.println("book() says: "+rv);
+            return rv;
         }
         catch(NullPointerException e)
         {
+            System.out.println("book() says This shuttle does not exist.");
             return -1;
         }
     }
@@ -161,7 +166,7 @@ public class Bookings {
             return -1;
         }
     }
-    
+
     /**Checks if user's name has been added to the list of bookings in a shuttle.
      * 
      * @param id the name of the user
@@ -190,15 +195,24 @@ public class Bookings {
         HashMap<String, Shuttle> toModify;
         if (destination.equals("Campus")) {
             toModify = fromStation;
+
         } else {
             toModify = fromCampus;
         }
-        Shuttle toBookOrCancel = toModify.get(timing);
+        //System.out.println(toModify);
+        Shuttle toBookOrCancel=null;
+        Iterator it = toModify.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            toBookOrCancel=(Shuttle)pair.getValue();
+        }
+        System.out.println(toBookOrCancel);
         return toBookOrCancel;
     }
 
     /**Enables safe modification of the hashmaps
-     * 
+     *
      * @param currDate the date and time to be compared against
      * @param currMap the Hashmap to be modified
      * @param ch the user's choice (whether to get details for SMS or to delete old data)
@@ -323,7 +337,7 @@ public class Bookings {
                 {
                     case 0:
                         int r=Bookings.book(name, toModify);
-                        System.out.println(r);
+                        System.out.println("User tried to book. RunEverything says: "+r);
                         return r;
                     case 1:
                         return Bookings.cancelBooking(name, toModify);

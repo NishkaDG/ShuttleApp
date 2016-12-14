@@ -83,7 +83,7 @@
                 int BookingResult = 3;
             try {
                     BookingResult = MainApplication.manager(0,name,date,destination);
-            } catch (ParseException e) {
+            } catch (Exception e) {
                     e.printStackTrace();
             }
             System.out.println(BookingResult);
@@ -160,7 +160,7 @@
                   int StatusResult = 3;
                   try {
                       StatusResult = MainApplication.manager(2,name,date,destination);
-                      } catch (ParseException e) {
+                      } catch (Exception e) {
                         e.printStackTrace();
                       }
                       System.out.println(StatusResult);
@@ -221,7 +221,7 @@
                 int StatusResult = 3;
                 try {
                     StatusResult = MainApplication.manager(1,name,date,destination);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 System.out.println(StatusResult);
