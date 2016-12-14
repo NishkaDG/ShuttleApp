@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8f7db2fe-ca23-446a-b401-0148f72c9b5d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/TransportApp_war_exploded/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/out/artifacts/TransportApp_war_exploded/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/in/edu/ashoka/TransportApp/Bookings.java" afterPath="$PROJECT_DIR$/src/main/java/in/edu/ashoka/TransportApp/Bookings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/BookingDetails.jsp" afterPath="$PROJECT_DIR$/web/BookingDetails.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/TransportApp_war_exploded/BookingDetails.jsp" afterPath="$PROJECT_DIR$/out/artifacts/TransportApp_war_exploded/BookingDetails.jsp" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -811,7 +809,7 @@
       <workItem from="1481407927690" duration="2608000" />
       <workItem from="1481437375267" duration="22853000" />
       <workItem from="1481658987063" duration="1435000" />
-      <workItem from="1481701726387" duration="5388000" />
+      <workItem from="1481701726387" duration="5440000" />
     </task>
     <task id="LOCAL-00001" summary="Connected frontend and backend, added email feedback module">
       <created>1481301244036</created>
@@ -827,7 +825,14 @@
       <option name="project" value="LOCAL" />
       <updated>1481470432353</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Bug underway fixing">
+      <created>1481707560810</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1481707560810</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -863,7 +868,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97081000" />
+    <option name="totallyTimeSpent" value="97133000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
